@@ -1,0 +1,31 @@
+package com.java.guestController;
+
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+import com.java.guestService.GuestService;
+
+public class GuestController extends MultiActionController {
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
+	private GuestService guestService;
+	
+	public GuestController() {}
+	public GuestController(GuestService gs) {
+		this.guestService = gs;
+	}
+	
+	public ModelAndView test(HttpServletRequest request,HttpServletResponse response , ModelAndView mav){
+		logger.info("GuestController test Start");
+		
+		//ModelAndView mav= new ModelAndView();
+		mav.addObject("request" , request);
+		guestService.testing(mav);
+		
+		return mav;
+	}
+}

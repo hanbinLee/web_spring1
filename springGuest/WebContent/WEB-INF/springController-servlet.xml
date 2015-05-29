@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+	   
+	   
+	   <!-- Handler Mapping : 요청 Controller  -->
+	   <bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	   		<property name="mappings">
+	   			<props>
+	   				<prop key="/guest/*.do">guestController</prop>
+	   			</props>
+	   		</property>
+	   </bean>
+	   
+	   <!-- 주소와 함수로 매핑 해야함 (클래스가 아님) -->
+	   <bean id="propertiesResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+	   		<property name="mappings">
+	   			<props>
+	   				<prop key="/guest/test.do">test</prop>
+	   			</props>
+	   		</property>
+	   </bean>
+	   
+	   <!-- GuestController extends MultiActionController -->
+	   <bean id="guestController" class="com.java.guestController.GuestController">
+	   		<constructor-arg ref="guestServiceImpl" />
+	   		<property name="methodNameResolver" ref="propertiesResolver" />
+	   </bean>
+	   
+	   <bean id="guestServiceImpl" class="com.java.guestService.GuestServiceImpl"/>
+	   
+	   <!-- Controller 에서 return 값에 추가 -->
+	   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	   		<property name="prefix" value="/WEB-INF/view/"/>
+	   		<property name="suffix" value=".jsp"/>
+	   </bean>
+	   
+	   <!--  /WEB-INF/view/ + guest/test + .jsp -->
+</beans>
