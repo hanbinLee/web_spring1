@@ -10,5 +10,7 @@
 <body>	
 	<c:set var="root" value="${pageContext.request.contextPath }" />
 	<a href="${root }/guest/test.do">페이지 테스트</a>
+	
+	<a href="${root }/guest/write.do">방명록</a>
 </body>
 </html>

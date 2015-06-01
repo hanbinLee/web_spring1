@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 	   
-	   
+	   <!-- First -->
 	   <!-- Handler Mapping : 요청 Controller  -->
 	   <bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 	   		<property name="mappings">
@@ -14,28 +14,62 @@
 	   		</property>
 	   </bean>
 	   
+	   <!-- third -->
 	   <!-- 주소와 함수로 매핑 해야함 (클래스가 아님) -->
 	   <bean id="propertiesResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
 	   		<property name="mappings">
 	   			<props>
 	   				<prop key="/guest/test.do">test</prop>
+	   				<prop key="/guest/write.do">guestWrite</prop>
+	   				<prop key="/guest/writeOk.do">guestWriteOk</prop>
+	   				<prop key="/guest/delete.do">guestDelete</prop>
 	   			</props>
 	   		</property>
 	   </bean>
 	   
+	   <!-- Second  -->
 	   <!-- GuestController extends MultiActionController -->
 	   <bean id="guestController" class="com.java.guestController.GuestController">
 	   		<constructor-arg ref="guestServiceImpl" />
 	   		<property name="methodNameResolver" ref="propertiesResolver" />
 	   </bean>
 	   
-	   <bean id="guestServiceImpl" class="com.java.guestService.GuestServiceImpl"/>
+	   <bean id="guestServiceImpl" class="com.java.guestService.GuestServiceImpl">
+	   		<constructor-arg ref="guestDaoImpl" />
+	   </bean>
 	   
+	   <!-- Fourth -->
 	   <!-- Controller 에서 return 값에 추가 -->
+	   <!--  /WEB-INF/view/ + guest/test + .jsp -->
 	   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 	   		<property name="prefix" value="/WEB-INF/view/"/>
 	   		<property name="suffix" value=".jsp"/>
 	   </bean>
 	   
-	   <!--  /WEB-INF/view/ + guest/test + .jsp -->
+	   <!-- DB 설정 DriverManager-->
+	   <bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	   		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+	   		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+	   		<property name="username" value="jsp"/>
+	   		<property name="password" value="tiger" />
+	   </bean>
+	   
+	   <!-- Mapper Resource -->
+	   <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+	   		<property name="mapperLocations">
+	   			<list>
+	   				<value>classpath:com/java/guestMapper/GuestMapper.xml</value>
+	   			</list>
+	   		</property>
+	   		<property name="dataSource" ref="driverManagerDataSource" />
+	   </bean>
+	   
+	   <!-- SqlSessionFactoryBuilder().bulid(DriverManager , MapperResource) -->
+	   <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	   		<constructor-arg ref="sqlSessionFactoryBean"></constructor-arg>
+	   </bean>
+	   <!-- SqlSessionFactory -->
+	   <bean id="guestDaoImpl" class="com.java.guestDao.GuestDaoImpl">
+	   		<constructor-arg ref="sqlSessionTemplate" />
+	   </bean>
 </beans>
