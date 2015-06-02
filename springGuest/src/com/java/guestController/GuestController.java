@@ -61,4 +61,23 @@ public class GuestController extends MultiActionController {
 		guestService.guestDelete(mav);
 		return mav;
 	}
+	
+	public ModelAndView guestSelect(HttpServletRequest request , HttpServletResponse response){
+		logger.severe("guestSelect --------------------");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("request" , request);
+		guestService.guestSelect(mav);
+		return mav;
+	}
+	
+	public ModelAndView guestUpdate(HttpServletRequest request , HttpServletResponse response,GuestDto guest){
+		logger.severe("guestUpdate --------------------");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("request" , request);
+		mav.addObject("guest" , guest);
+		guestService.guestUpdate(mav);
+		return mav;
+	}
 }

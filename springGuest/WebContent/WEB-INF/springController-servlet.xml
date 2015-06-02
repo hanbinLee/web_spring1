@@ -23,6 +23,8 @@
 	   				<prop key="/guest/write.do">guestWrite</prop>
 	   				<prop key="/guest/writeOk.do">guestWriteOk</prop>
 	   				<prop key="/guest/delete.do">guestDelete</prop>
+	   				<prop key="/guest/update.do">guestSelect</prop>
+	   				<prop key="/guest/updateOk.do">guestUpdate</prop>
 	   			</props>
 	   		</property>
 	   </bean>

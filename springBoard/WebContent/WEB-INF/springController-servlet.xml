@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Mapping -->
+	<bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/board/*.do">boardController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 해당주소에 해당 함수를 찾는 메소드 -->
+	<bean id="propertiesMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+				<prop key="/board/test.do">test</prop>
+				<prop key="/board/write.do">boardWrite</prop>
+				<prop key="/board/writeOk.do">boardWriteOk</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Controller -->
+	<bean id="boardController" class="com.java.boardController.BoardController">
+		<constructor-arg ref="boardServiceImpl"/>
+		<property name="methodNameResolver" ref="propertiesMethodNameResolver"/>
+	</bean>
+	
+	<!-- Service -->
+	<bean id="boardServiceImpl" class="com.java.boardService.BoardServiceImpl">
+		<constructor-arg ref="boardDaoImpl"/>
+	</bean>
+	
+	<!-- View -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- DB설정 -->
+	<bean id="myDB" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="jsp"/>
+		<property name="password" value="tiger"/>
+	</bean>
+	
+	<!-- MyBatis 설정 1-->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="myDB"/>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:com/java/boardMapper/BoardMapper.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- MyBatis 설정 2 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean" />
+	</bean>
+	
+	<!-- DAO -->
+	<bean id="boardDaoImpl" class="com.java.boardDao.BoardDaoImpl">
+		<constructor-arg ref="sqlSessionTemplate"/>
+	</bean>
+</beans>

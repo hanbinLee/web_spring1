@@ -99,4 +99,33 @@ public class GuestServiceImpl implements GuestService{
 	}
 	
 	
+	@Override
+	public void guestSelect(ModelAndView mav) {
+		Map<String , Object> map = mav.getModelMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		
+		int num=Integer.parseInt(request.getParameter("num"));
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		
+		GuestDto guestDto = guestDao.select(num);
+		mav.addObject("guest" , guestDto);
+		mav.addObject("pageNumber" , pageNumber);
+		mav.setViewName("guest/update");
+	}
+
+	@Override
+	public void guestUpdate(ModelAndView mav) {
+		Map<String , Object> map = mav.getModelMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		GuestDto guest = (GuestDto) map.get("guest");
+		
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));	
+		int check = guestDao.update(guest);
+		mav.addObject("check" , check);
+		mav.addObject("pageNumber" , pageNumber);
+		mav.setViewName("guest/updateOk");
+	}
+	
+	
+	
 }

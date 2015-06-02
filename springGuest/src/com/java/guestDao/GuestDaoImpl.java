@@ -39,6 +39,13 @@ public class GuestDaoImpl implements GuestDao {
 		return sqlSession.delete("deleteNum" , num);
 	}
 	
-	
+	@Override
+	public GuestDto select(int num) {
+		return sqlSession.selectOne("selectNum" , num);
+	}
+
+	public int update(GuestDto guestDto){
+		return sqlSession.update("updateNum" , guestDto);
+	}
 	
 }

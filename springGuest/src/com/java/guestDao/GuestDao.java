@@ -9,4 +9,6 @@ public interface GuestDao {
 	public List<GuestDto> getGuestList(int startRow , int endRow);
 	public int insert(GuestDto guestDto);
 	public int delete(int num);
+	public GuestDto select(int num);
+	public int update(GuestDto guestDto);
 }

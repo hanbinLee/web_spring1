@@ -9,4 +9,6 @@ public interface GuestService {
 	
 	public void guestWriteOk(ModelAndView mav);
 	public void guestDelete(ModelAndView mav);
+	public void guestSelect(ModelAndView mav);
+	public void guestUpdate(ModelAndView mav);
 }

@@ -31,4 +31,12 @@
 	<delete id="deleteNum" parameterType="int">
 		delete from guest where num=#{num}
 	</delete>
+	
+	<select id="selectNum" resultMap="guestDto" parameterType="int">
+		select * from guest where num = #{num}
+	</select>
+	
+	<update id="updateNum" parameterType="com.java.guestDto.GuestDto">
+		update guest set message = #{message} , password = #{password} where num = #{num}
+	</update>
 </mapper>
