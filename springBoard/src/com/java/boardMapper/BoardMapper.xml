@@ -24,11 +24,40 @@
 	
 	<update id="groupNumberUpdate" parameterType="java.util.Map">
 		update board set sequence_number = sequence_number +1 
-			where group_number=#{groupNumber} and sequence_level > #{sequenceLevel}
+			where group_number=#{groupNumber} and sequence_number > #{sequenceNumber}
 	</update>
 	
 	<insert id="boardInsert" parameterType="com.java.boardDto.BoardDto">
 		insert into board values(board_board_number_seq.nextval , #{writer} , #{subject} , #{email} , #{content} , #{password} ,
 		#{writeDate} , #{readCount} , #{ip} , #{groupNumber} , #{sequenceNumber} , #{sequenceLevel} , 'x' , 'x' , 0)
 	</insert>
+	
+	<select id="boardCount" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<select id="getBoardList" parameterType="java.util.HashMap" resultMap="boardDto" >
+		<![CDATA[
+			select * from
+				(select rownum rnum , a.* from
+					(select * from board order by group_number desc , sequence_number asc ) a )
+					 where rnum >=#{startRow} and rnum <= #{endRow}
+		]]>
+	</select>
+	
+	<update id="readCount" parameterType="int">
+		update board set read_count = read_count +1 where board_number = #{boardNumber}
+	</update>
+	
+	<select id="getInfo" parameterType="int" resultMap="boardDto">
+		select * from board where board_number = #{boardNumber}
+	</select>
+	
+	<delete id="delete" parameterType="java.util.HashMap">
+		delete  from board where board_number = #{boardNumber} and password = #{password}
+	</delete>
+	
+	<update id="update" parameterType="com.java.boardDto.BoardDto">
+		update board set subject = #{subject} , content = #{content} , password = #{password} where board_number = #{boardNumber}
+	</update>
 </mapper>

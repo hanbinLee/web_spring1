@@ -45,6 +45,65 @@ public class BoardController extends MultiActionController{
 		mav.addObject("request" , request);
 		mav.addObject("boardDto" , boardDto);
 		boardService.boardWriteOk(mav);
+		
+		logger.info(mav.getViewName());
+		return mav;
+	}
+	
+	public ModelAndView boardList(HttpServletRequest request , HttpServletResponse response){
+		super.logger.info("-----------------------Controller boardList--------------------------");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("request" , request);
+		boardService.boardList(mav);
+		return mav;
+	}
+	
+	public ModelAndView boardRead(HttpServletRequest request , HttpServletResponse response){
+		super.logger.info("-----------------------Controller boardRead--------------------------");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("request" , request);
+		boardService.boardRead(mav);
+		return mav;
+	}
+	
+	public ModelAndView boardDelete(HttpServletRequest request , HttpServletResponse response){
+		super.logger.info("-----------------------Controller delete--------------------------");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("request" , request);
+		boardService.boardDelete(mav);
+		return mav;
+	}
+	
+	public ModelAndView boardDeleteOk(HttpServletRequest request , HttpServletResponse response){
+		super.logger.info("-----------------------Controller deleteOk--------------------------");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("request" , request);
+		boardService.boardDeleteOk(mav);
+		return mav;
+	}
+	
+	public ModelAndView boardUpdate(HttpServletRequest request , HttpServletResponse response){
+		super.logger.info("-----------------------Controller update--------------------------");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("request" , request);
+		boardService.boardUpdate(mav);
+		
+		return mav;
+	}
+	
+	public ModelAndView boardUpdateOk(HttpServletRequest request , HttpServletResponse response , BoardDto boardDto){
+		super.logger.info("-----------------------Controller UpdateOk--------------------------");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("request" , request);
+		mav.addObject("boardDto" , boardDto);
+		boardService.boardUpdateOk(mav);
+		
 		return mav;
 	}
 }

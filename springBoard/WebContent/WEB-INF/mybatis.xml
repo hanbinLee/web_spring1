@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     							  http://www.springframework.org/schema/beans/spring-beans.xsd
+     							  http://www.springframework.org/schema/aop 
+								http://www.springframework.org/schema/aop/spring-aop.xsd
+								http://www.springframework.org/schema/tx 
+								http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- DB설정 -->
+	<bean id="myDB" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="jsp"/>
+		<property name="password" value="tiger"/>
+	</bean>
+	
+	<!-- MyBatis 설정 1-->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="myDB"/>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:com/java/boardMapper/BoardMapper.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- MyBatis 설정 2 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean" />
+	</bean>
+	
+	<!-- Transaction -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+       <property name="dataSource" ref="myDB"/>
+	</bean>
+     
+	<aop:config proxy-target-class="true">
+	    <aop:pointcut id="serviceOperation" expression="execution(* com.java.boardDao.*.*(..))" />
+	    <aop:advisor id="transactionAdvisor" pointcut-ref="serviceOperation" advice-ref="txAdvice"/>
+	</aop:config>
+         
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	    <tx:attributes>
+	        <tx:method name="get*" rollback-for="Exception"/>
+	    </tx:attributes>
+	</tx:advice>
+</beans>

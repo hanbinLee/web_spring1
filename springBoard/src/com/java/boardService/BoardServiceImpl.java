@@ -2,6 +2,7 @@ package com.java.boardService;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -79,6 +80,12 @@ public class BoardServiceImpl implements BoardService {
 		int check = boardDao.boardInsert(boardDto);
 		logger.info("check" + check);
 		mav.addObject("check" , check);
+		
+//		logger.severe(mav.getViewName());
+//		mav.addObject("boardNumber" , boardDto.getBoardNumber());
+//		mav.addObject("groupNumber" , boardDto.getGroupNumber());
+//		mav.addObject("sequenceNumber" , boardDto.getSequenceNumber());
+//		mav.addObject("sequenceLevel" , boardDto.getSequenceLevel());
 	}
 	
 	public void boardWriteNumber(BoardDto boardDto){
@@ -123,5 +130,110 @@ public class BoardServiceImpl implements BoardService {
 		boardDto.setSequenceNumber(sequenceNumber);
 	}
 	
-	
+	@Override
+	public void boardList(ModelAndView mav) {
+		Map<String , Object> map = mav.getModelMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		
+		String pageNumber = request.getParameter("pageNumber");
+		if(pageNumber == null) pageNumber = "1";
+		
+		int boardSize = 5; //한페이지에 보여질 게시물 갯수
+		int currentPage = Integer.parseInt(pageNumber);
+		int startRow = (currentPage-1)*boardSize +1;
+		int endRow = currentPage*boardSize;
+		
+		int count=boardDao.getBoardConut();
+		logger.info("count : " + count);
+		
+		List<BoardDto> boardList=null;
+		if(count > 0){
+			boardList = boardDao.getBoardList(startRow , endRow);
+		}
+		
+		mav.addObject("boardSize" , boardSize);
+		mav.addObject("boardList" , boardList);
+		mav.addObject("count" ,count);
+		mav.addObject("currentPage" , currentPage);
+		
+		//이거안해도 넘어가짐 이유는 아직모름;
+		mav.setViewName("board/list");
+	}
+	@Override
+	public void boardRead(ModelAndView mav) {
+		Map<String , Object> map = mav.getModelMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		
+		int boardNumber = Integer.parseInt(request.getParameter("boardNumber"));
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		
+		BoardDto boardDto=null;
+		try {
+			boardDto = boardDao.getInfo(boardNumber);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		mav.addObject("board" , boardDto);
+		mav.addObject("pageNumber" , pageNumber);
+	}
+	@Override
+	public void boardDelete(ModelAndView mav) {
+		logger.severe("delete start");
+		Map<String , Object> map = mav.getModelMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		int boardNumber = Integer.parseInt(request.getParameter("boardNumber"));
+		mav.addObject("pageNumber", pageNumber);
+		mav.addObject("boardNumber" , boardNumber);
+		mav.setViewName("board/delete");
+	}
+	@Override
+	public void boardDeleteOk(ModelAndView mav) {
+		Map<String , Object> map = mav.getModelMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		int boardNumber = Integer.parseInt(request.getParameter("boardNumber"));
+		String password = request.getParameter("password");
+		
+		HashMap<String , Object> hMap = new HashMap<String , Object>();
+		hMap.put("boardNumber", boardNumber);
+		hMap.put("password", password);
+		
+		int check = boardDao.boardDelete(hMap);
+		mav.addObject("pageNumber", pageNumber);
+		mav.addObject("boardNumber" , boardNumber);
+		mav.addObject("check" , check);
+	}
+	@Override
+	public void boardUpdate(ModelAndView mav) {
+		Map<String , Object> map = mav.getModelMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		int boardNumber = Integer.parseInt(request.getParameter("boardNumber"));
+		
+		BoardDto board = boardDao.getInfo(boardNumber);
+		
+		mav.addObject("board" , board);
+		mav.addObject("pageNumber", pageNumber);
+		mav.addObject("boardNumber" , boardNumber);
+		mav.setViewName("board/update");
+	}
+	@Override
+	public void boardUpdateOk(ModelAndView mav) {
+		Map<String , Object> map = mav.getModelMap();
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		BoardDto boardDto = (BoardDto) map.get("boardDto");
+		
+		int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		int boardNumber = Integer.parseInt(request.getParameter("boardNumber"));
+		mav.addObject("pageNumber", pageNumber);
+		mav.addObject("boardNumber" , boardNumber);
+		
+		int check = boardDao.boardUpdate(boardDto);
+		logger.severe("check :" + check);
+		mav.addObject("check" , check);
+		mav.setViewName("board/updateOk");
+	}
 }

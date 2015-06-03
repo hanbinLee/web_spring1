@@ -9,7 +9,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<a href="${root }/board/test.do">테스트</a>
+	<%-- -<a href="${root }/board/test.do">테스트</a>  --%>
 	<a href="${root }/board/write.do">글쓰기</a>
+	<a href="${root }/board/list.do">글목록</a>
 </body>
 </html>
