@@ -5,14 +5,8 @@
 <mapper namespace="dao.BoardMapper">
 	<resultMap type="com.java.boardDto.BoardDto" id="boardDto">
 		<result property="boardNumber" column="board_number" />
-		<result property="writer" column="writer" />
-		<result property="subject" column="subject" />
-		<result property="email" column="email" />
-		<result property="content" column="content" />
-		<result property="password" column="password" />
 		<result property="writeDate" column="write_date" />
 		<result property="readCount" column="read_count" />
-		<result property="ip" column="ip" />
 		<result property="groupNumber" column="group_number" />
 		<result property="sequenceNumber" column="sequence_number" />
 		<result property="sequenceLevel" column="sequence_level" />

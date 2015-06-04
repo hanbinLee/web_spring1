@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     							  http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- HandlerMapping -->
+	<bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/member/*.do">memberController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="propertiesMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+				<prop key="/member/test.do">test</prop>
+				<prop key="/member/register.do">register</prop>
+				<prop key="/member/registerOk.do">registerOk</prop>
+				<prop key="/member/idCheck.do">idCheck</prop>
+				<prop key="/member/zipcode.do">zipcode</prop>
+				<prop key="/member/login.do">login</prop>
+				<prop key="/member/loginOk.do">loginOk</prop>
+				<prop key="/member/main.do">goMain</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Controller -->
+	<bean id="memberController" class="com.java.memberController.MemberController">
+		<constructor-arg ref="memberServiceImpl"/>
+		<property name="methodNameResolver" ref="propertiesMethodNameResolver"></property>
+	</bean>
+	
+	<!-- Service -->
+	<bean id="memberServiceImpl" class="com.java.memberService.MemberServiceImpl">
+		<constructor-arg ref="memberDaoImpl"/>
+	</bean>
+	
+	<!-- View -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+</beans>

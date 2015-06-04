@@ -2,16 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="root" value="${pageContext.request.contextPath }"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>우편번호 검색</title>
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="${root }/css/member/script.js"></script>
 </head>
 <body>
-	<c:set var="root" value="${pageContext.request.contextPath }"/>
-	
 	<c:choose>
 		<c:when test="${fn:length(list)==0}">
 			<div align="center">해당 데이터가 존재하지 않습니다.</div>	
