@@ -6,24 +6,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>loginOk</title>
-<script src="${root}/css/member/jquery.js"></script>
+<title>Insert title here</title>
+<script src="${root }/js/jquery.js"></script>
 </head>
 <body>
 	<c:choose>
-		<c:when test="${memberLevel !=null }">
-			<c:set var="id" value="${id }" scope="session"/>
-			<c:set var="memberLevel" value="${memberLevel }" scope="session" />
-			<script>
-				alert("로그인 성공");
-				$(location).attr("href" ,"${root}/aStart.jsp" );
-			</script>
-		</c:when>	
+		<c:when test="${check > 0}">
+			<script type="text/javascript">
+			alert("삭제완료");
+			$(location).attr("href" , "${root}/index.jsp");
+		</script>
+		</c:when>
 		
 		<c:otherwise>
 			<script type="text/javascript">
-				alert("로그인 실패");
-				$(location).attr("href" ,"${root}/member/login.do" );
+				alert("삭제 실패");
+				$(location).attr("attr" , "${root}/delete.do");
 			</script>
 		</c:otherwise>
 	</c:choose>

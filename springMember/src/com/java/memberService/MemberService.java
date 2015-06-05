@@ -8,5 +8,6 @@ public interface MemberService {
 	public void idCheck(ModelAndView mav);
 	public void zipcode(ModelAndView mav);
 	public void login(ModelAndView mav);
+	public void update(ModelAndView mav);
 
 }

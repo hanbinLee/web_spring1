@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
@@ -76,7 +77,14 @@ public class MemberController extends MultiActionController{
 		return mav;
 	}
 	
-	public String goMain(HttpServletRequest request , HttpServletResponse response){
-		return "member/main";
+	public ModelAndView update(HttpServletRequest request , HttpServletResponse response){
+		logger.info("update");
+		ModelAndView mav = new ModelAndView("member/update");
+		HttpSession session = request.getSession();
+		String id = (String) session.getAttribute("id");
+		mav.addObject("id" , id);
+		
+		memberService.update(mav);
+		return mav;
 	}
 }

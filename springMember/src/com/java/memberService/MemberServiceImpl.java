@@ -80,5 +80,14 @@ public class MemberServiceImpl implements MemberService{
 			mav.addObject("memberLevel" , member.getMemberLevel());
 		}
 	}
+
+	@Override
+	public void update(ModelAndView mav) {
+		Map<String , Object> map = mav.getModelMap();
+		String id = (String) map.get("id");
+		
+	}
+	
+	
 	
 }

@@ -145,6 +145,13 @@
 			}	
 		}
 	}
+	/*
+	$("input[name]='interestValue']").each(function(){
+		if($(this).val()=="${interest}"){
+			$(this).attr("checked" ,true);
+		}
+	});
+	*/
 
 </script>
 	
