@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="dao.memberMapper">
+	<resultMap type="com.java.memberDto.MemberDto" id="memberDto">
+		<result property="memberLevel" column="member_level" />
+		<result property="registerDate" column="register_date" />
+	</resultMap>
+	
+	<insert id="register" parameterType="com.java.memberDto.MemberDto">
+		insert into member values(
+			 member_num_seq.nextval , #{id} , #{password} , #{name} , #{jumin1} , #{jumin2} ,
+			 #{email} , #{zipcode} , #{address} , #{job} , #{mailing} ,
+			 #{interest} , #{memberLevel} , #{registerDate}
+		)
+	</insert>
+	
+	<select id="idCheck" parameterType="String" resultType="int">
+		select count(*) from member where id = #{id} 
+	</select>
+	
+	<select id="zipcode" parameterType="String" resultType="com.java.memberDto.MemberZipcodeDto">
+		select * from zipcode where dong = #{dong}
+	</select>
+	
+	<select id="login" parameterType="java.util.HashMap" resultMap="memberDto">
+		select * from member where id=#{id} and password=#{password}
+	</select>
+</mapper>
